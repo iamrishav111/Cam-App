@@ -48,15 +48,15 @@ public class MainActivity extends AppCompatActivity {
         mAppExcutor = new AppExecutor();
 
         mImageView = findViewById(R.id.imageView);
-//        mClear = findViewById(R.id.clear);
+        mClear = findViewById(R.id.clear);
         mSave = findViewById(R.id.Save);
 //        mShare = findViewById(R.id.Share);
         mStartCamera = findViewById(R.id.startCamera);
 
         mImageView.setVisibility(View.GONE);
-//        mShare.setVisibility(View.GONE);
+        mShare.setVisibility(View.GONE);
         mSave.setVisibility(View.GONE);
-//        mClear.setVisibility(View.GONE);
+        mClear.setVisibility(View.GONE);
 
 
         mStartCamera.setOnClickListener(v -> {
@@ -86,6 +86,21 @@ public class MainActivity extends AppCompatActivity {
             });
 
             Toast.makeText(this,"Image Save",Toast.LENGTH_LONG).show();
+
+        });
+
+        mClear.setOnClickListener(v -> {
+            // Clear the image and toggle the view visibility
+            mImageView.setImageResource(0);
+            mStartCamera.setVisibility(View.VISIBLE);
+            mSave.setVisibility(View.GONE);
+            mShare.setVisibility(View.GONE);
+            mClear.setVisibility(View.GONE);
+
+            mAppExcutor.diskIO().execute(() -> {
+                // Delete the temporary image file
+                BitmapUtils.deleteImageFile(this, mTempPhotoPath);
+            });
 
         });
 
@@ -176,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
         mStartCamera.setVisibility(View.GONE);
         mSave.setVisibility(View.VISIBLE);
 //        mShare.setVisibility(View.VISIBLE);
-//        mClear.setVisibility(View.VISIBLE);
+        mClear.setVisibility(View.VISIBLE);
         mImageView.setVisibility(View.VISIBLE);
 
         // Resample the saved image to fit the ImageView
